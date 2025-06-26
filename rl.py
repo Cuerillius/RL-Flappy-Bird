@@ -126,7 +126,7 @@ class FlappyBird:
         return delta_x_to_column, delta_y_to_gap, self.bird.rect.y, reward
 
 
-filename = 'q_table-v2.npy'
+filename = 'q_table.npy'
 
 game = FlappyBird()
 
@@ -151,13 +151,12 @@ num_x_bins = int(configs.SCREEN_WIDTH / bin_size_x)
 bin_size_abs_y = 25
 num_abs_y_bins = int(configs.SCREEN_HEIGHT / bin_size_abs_y)
 
-
-# q_table = np.random.uniform(low=-1, high=1, size=(num_x_bins, num_y_bins, num_abs_y_bins, action_size))
-# q_table = np.zeros((num_x_bins, num_y_bins, num_abs_y_bins, action_size))
-q_table = np.fromfile(filename, dtype=float, sep=" ").reshape(
-    (num_x_bins, num_y_bins, num_abs_y_bins, action_size))
-# q_table = np.loadtxt(filename, dtype=int)
-# q_table = np.loadtxt("q_table.txt", dtype=float).reshape((num_x_bins, num_y_bins, num_abs_y_bins, action_size))
+try:
+    q_table = np.fromfile(filename, dtype=float, sep=" ").reshape(
+        (num_x_bins, num_y_bins, num_abs_y_bins, action_size))
+except:
+    q_table = np.random.uniform(
+        low=-1, high=1, size=(num_x_bins, num_y_bins, num_abs_y_bins, action_size))
 
 
 def choose_action(state):
